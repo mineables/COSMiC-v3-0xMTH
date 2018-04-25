@@ -1,6 +1,6 @@
 COSMIC [the Community Open-Source Miner, Including CUDA] for PoW Tokens (0xBitcoin)
-Version 2.10-pre5 'HashBurner' Build by LtTofu a.k.a. Mag517, Version 3 (3.1t test)
-------------------------------------------------------------------------
+Version 2.10-pre5 + 'HashBurner' Build by LtTofu a.k.a. Mag517, Version 3.4t (release candidate)
+------------------------------------------------------------------------------------------------
 
 Please consider a donation to help support my development! Love you guys! :)
 ETH/0xBTC/Other Tokens: 0x7C4AADEC857E13E4a5642B4041a2f36274fFE8ce
@@ -13,7 +13,14 @@ ETH/0xBTC/Other Tokens: 0x7C4AADEC857E13E4a5642B4041a2f36274fFE8ce
 	underutilize your GPU. If you experience slowdown in your GUI (e.g. Windows), lowering
 	this might help alleviate it.
 
-Changes added in HB V3.4t (latest version) and 3.1/2t (previous):
+Changes added in COSMiC V3.4t (this version):
+---
+- (Bugfix) Fixed `account` commands to list/select/create accounts, which broke sometime around 2.10.0pre5.
+	   Be sure to keep your miner up to date! :)
+- (General) Now notifies users of new challenges received by the miner. Other UI tweaks.
+- (General) Auto-donate a.k.a. devfee can now be configured in multiples of 0.5%.
+
+Changes added in COSMiC V3.x (previous versions of COSMiC-V3.x series):
 ---
 
 - (Speedup) Started implementing a shortcut which flips the high and low bytes of a state[] element to get
@@ -22,7 +29,6 @@ Changes added in HB V3.4t (latest version) and 3.1/2t (previous):
 - (General) WIP: Optimizations are chosen based on the detected card, set in h_HBoptimizations[] and sent to
 		device where they can be implemented. Display optimizations in use. Some currently hard-coded
 		to provide the best balance of performance on Maxwell Gen2/Pascal.
-- (General) Timestamps are now displayed with each submitted share.
 - (General) Added configurable Automatic Donation (a.k.a. 'DevFee') with default of 2%/1% depending on the
 		archive(7zip) you choose, turn it off, or set a higher one if you really like this build :)
 		Donations support me further developing COSMiC and will be shared with contributors to the
@@ -36,11 +42,12 @@ Changes added in HB V3.4t (latest version) and 3.1/2t (previous):
 - (Speedup) More use of permutation in the place of rotations.
 - (Speedup) Testing ROTL64-replacement for speed in keccak() hashing function's init/nonce calcs
 - (General) Solutions are now displayed, including invalids (which are not submitted).
+- (General) Devfee of ~2% to support 0xBTC miner devs, adjustable (see later in this document).
 - (General) Should produce less invalid shares (as interpreted at the pool level.)
 - (General) Nonce rotation lookup table removed for performance testing.
 - (General) Small UI changes.
 
-Changes added in HB V2 (previous version):
+Changes added in COSMiC V2 (previous version):
 ---
 
 - (Speedup) Operations combined with LOP3 instruction in new PTX/ASM-based function.
@@ -67,7 +74,7 @@ Changes added in HB V2 (previous version):
 .. and quite a few more little tweaks I might've forgotten to list.
 
 
-Changes added by HB V1 (previous):
+Changes added by COSMiC V1 (previous version):
 ---
 
 - (Speedup) Bidirectional Rotation: State values rotated right rather than left resulting in a rotation
