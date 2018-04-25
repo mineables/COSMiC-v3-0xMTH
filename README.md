@@ -13,7 +13,7 @@ ETH/0xBTC/Other Tokens: 0x7C4AADEC857E13E4a5642B4041a2f36274fFE8ce
 	underutilize your GPU. If you experience slowdown in your GUI (e.g. Windows), lowering
 	this might help alleviate it.
 
-Changes added in HB V3 (this version):
+Changes added in HB V3.4t (latest version) and 3.1/2t (previous):
 ---
 
 - (Speedup) Started implementing a shortcut which flips the high and low bytes of a state[] element to get
@@ -22,6 +22,7 @@ Changes added in HB V3 (this version):
 - (General) WIP: Optimizations are chosen based on the detected card, set in h_HBoptimizations[] and sent to
 		device where they can be implemented. Display optimizations in use. Some currently hard-coded
 		to provide the best balance of performance on Maxwell Gen2/Pascal.
+- (General) Timestamps are now displayed with each submitted share.
 - (General) Added configurable Automatic Donation (a.k.a. 'DevFee') with default of 2%/1% depending on the
 		archive(7zip) you choose, turn it off, or set a higher one if you really like this build :)
 		Donations support me further developing COSMiC and will be shared with contributors to the
@@ -35,7 +36,6 @@ Changes added in HB V3 (this version):
 - (Speedup) More use of permutation in the place of rotations.
 - (Speedup) Testing ROTL64-replacement for speed in keccak() hashing function's init/nonce calcs
 - (General) Solutions are now displayed, including invalids (which are not submitted).
-- (General) Devfee of ~2% to support 0xBTC miner devs, adjustable (see later in this document).
 - (General) Should produce less invalid shares (as interpreted at the pool level.)
 - (General) Nonce rotation lookup table removed for performance testing.
 - (General) Small UI changes.
