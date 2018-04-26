@@ -137,7 +137,10 @@ Building from Source (on Windows):
 - Or ` npm install  `
 - Or ` ./buildandrun  ` or `  ./buildandrun.bat   `
 
-Adjusting the Automatic Donation a.k.a. DevFee (it's easy!):
+I will be updating this section with more thorough info on how to build in Windows if you hit a snag.
+You can also get some tips from this thread: https://www.reddit.com/r/0xbitcoin/comments/8381br/guideongoing_how_to_build_the_opensource_cuda/
+
+Adjusting the Automatic Donation a.k.a. DevFee:
 ---
 The DevFee helps support the developers of 0xBTC miners, including this one and will be distributed to all
 contributors to the published/released code. About 2% of shares, a little less really will by default go to pay
@@ -145,11 +148,10 @@ the DevFee. Unlike most miners, the mining process does not stop and you remain 
 all times! This ensures there are no hiccups and your mining speed is NOT affected. :)
 
 If you'd like to change the % of the Donation a.k.a. DevFee or disable it entirely (please think of the poor devs!):
-- Extract the source code from the BitBucket ( https://bitbucket.org/LieutenantTofu/cosmic-v3.x/src ) or archive (7z)
+- Extract the source code from the BitBucket ( https://bitbucket.org/LieutenantTofu/cosmic-v3/ ) or archive (7z)
 	into a convenient location, which I'll call the 'root' below.
 - Open lib/0xbitcoinminer-accel.js. At the top, look for ` const donationPercent = 2; ` which means 2% Donation a.k.a. DevFee.
-- Change this number to pick a higher or lower percentage. At 2, of each 100 shares that you submit, the last 2 will go to
-	support development.
+- Change this number to pick a higher or lower percentage. At 2, 2% of shares, occurring semirandomly, will be donated.
 - You can also change the DevFee address in the submitNewMinedBlock() function, around line 157, to donate to a specific
 	developer, divide up your earnings across multiple ETH accounts or mine on behalf of a friend.
 - Build using the above instructions or simply run with the `  node index.js  ` command from your terminal.
@@ -157,6 +159,11 @@ If you'd like to change the % of the Donation a.k.a. DevFee or disable it entire
 
 Troubleshooting:
 ---
+
+Q: "How do I mine with multiple GPUs?"
+A: Adding this info right away! In the meantime, it's a hot topic of conversation in #support on the Discord.
+There are a few ways to do this right now- I'll also be supplying a sample batch file to get you started along with
+some of the other approaches. Thanks for your patience!
 
 Q: "The window closes immediately"
 A: You need to run from a command prompt to see what the error was. Type 'cmd' at the Run prompt (Windows Key + R) or
