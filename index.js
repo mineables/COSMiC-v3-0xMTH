@@ -39,6 +39,7 @@ function init() {
         console.log('Welcome to COSMiC: Community Open-Source Miner including CUDA')
         console.log('HashBurner build by LtTofu [V3.4t] - "Cookin your Hashbrowns" ')
         console.log('based on v2.10.0pre5+ by Mikers, Azlehria & the 0xBitcoin Discord Crew')
+        console.log('* Experimental Build for Older CUDA Devices (Kepler and previous) *')
         console.log('')
         console.log('Type a command to get started.  Type "help" for a list of commands.')
     }

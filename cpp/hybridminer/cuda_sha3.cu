@@ -81,6 +81,7 @@ uint64_t bswap_64( uint64_t input )
 __device__ __forceinline__
 uint64_t ROTL64asm (uint64_t input, uint32_t magnitude)
 {
+#if __CUDA_ARCH__ >= 320
     asm ("{"
          ".reg .b32 hi, lo, mag, scr;"
          "mov.b32 mag, %1;"
@@ -90,12 +91,17 @@ uint64_t ROTL64asm (uint64_t input, uint32_t magnitude)
          "mov.b64 %0, {scr,lo};"
          "}" : "+l"(input) : "r"(magnitude) );
     return input;
+#else
+    return ROTL64(input, magnitude);
+#endif
 }
 
 // try doing this with two offsettings of output operand instead
 __device__ __forceinline__
 uint64_t ROTR64asm (uint64_t input, uint32_t magnitude)
 {
+  // TODO/FIXME: verify correct version is running on multiple arches
+#if __CUDA_ARCH__ >= 320
     asm ("{"
          ".reg .b32 hi, lo, mag, scr;"
          "mov.b32 mag, %1;"
@@ -105,6 +111,9 @@ uint64_t ROTR64asm (uint64_t input, uint32_t magnitude)
          "mov.b64 %0, {scr,lo};"
          "}" : "+l"(input) : "r"(magnitude) );
     return input;
+#else
+    return ROTR64(input, magnitude);
+#endif
 }
 
 __device__ __forceinline__
@@ -196,6 +205,7 @@ uint64_t ROTRby8 (uint64_t input)
 __device__ __forceinline__
 uint64_t ROTLby1 (uint64_t input)
 {
+#if __CUDA_ARCH__ >= 320
     asm ("{"
          ".reg .b32 hi, lo, scr;"
          "mov.b64 {hi,lo}, %0;"
@@ -204,12 +214,16 @@ uint64_t ROTLby1 (uint64_t input)
          "mov.b64 %0, {scr,lo};"
          "}" : "+l"(input) );
     return input;
+#else
+    return ROTL64(input, 1);
+#endif
 }
 
 // try doing this with two offsettings of output operand instead
 __device__ __forceinline__
 uint64_t ROTRby1 (uint64_t input)
 {
+#if __CUDA_ARCH__ >= 320
     asm ("{"
          ".reg .b32 hi, lo, scr;"
          "mov.b64 {hi,lo}, %0;"
@@ -218,6 +232,9 @@ uint64_t ROTRby1 (uint64_t input)
          "mov.b64 %0, {scr,lo};"
          "}" : "+l"(input) );
     return input;
+#else
+    return ROTR64(input, 1);
+#endif
 }
 
 __device__ __forceinline__
@@ -234,8 +251,8 @@ uint64_t xor3( uint64_t a, uint64_t b, uint64_t c )
 // FIXME: Assuming SM 5.x+
 __device__ __forceinline__
 uint64_t lop3_0xD2( uint64_t a, uint64_t b, uint64_t c )
-{
-//#if __CUDA_ARCH__ >= 500
+{   // FIXME/TODO: make SURE that the correct version is running on Maxwell Gen2, Pascal!
+#if __CUDA_ARCH__ >= 500
   asm( "{"
        "  .reg .b32 ah, al, bh, bl, ch, cl;"
        "  mov.b64 {ah,al}, %0;"
@@ -247,9 +264,9 @@ uint64_t lop3_0xD2( uint64_t a, uint64_t b, uint64_t c )
        "  mov.b64 %0, {ah,al};"
        "}" : "+l"(a) : "l"(b), "l"(c) );
   return a;
-//#else
-//return a ^ ((~b) & c);
-//#endif
+#else
+  return a ^ ((~b) & c);
+#endif
 }
 
 __device__
@@ -277,7 +294,7 @@ bool keccak( uint64_t nonce, uint32_t thread, uint64_t i_mid[], bool optimizatio
   // TODO: consider defining these conditionally, preprocessor
   //if (HB_SELECTIVE_32BIT_XOR)
   //uint2* RCvec = (uint2*)&RClocal;     // vectorized access to RClocal[]
-  uint2* stateVec = (uint2*)&state;    // vectorized access to state[]
+  //uint2* stateVec = (uint2*)&state;    // vectorized access to state[]
 
   //if (thread == 543210)
   //    PermTest (0);
@@ -383,9 +400,11 @@ bool keccak( uint64_t nonce, uint32_t thread, uint64_t i_mid[], bool optimizatio
     
     // FIXME: watch out for thread divergence within warp. But this should be fine.
     //if (optimizations[NUM_HBOPT_ROTLBACK32])
-        state[15] = ROTRfrom32 (state[4],  5);        // forced on.
-    //  else
-    //    state[15] = ROTL64asm( state[ 4], 27 );     // unoptimized version.
+#if __CUDA_ARCH__ >= 320
+    state[15] = ROTRfrom32 (state[4],  5);        // (make toggleable- forced on for now)
+#else
+    state[15] = ROTL64(state[4], 27);
+#endif
 
     /*if (thread==1236667)
     {
@@ -402,15 +421,13 @@ bool keccak( uint64_t nonce, uint32_t thread, uint64_t i_mid[], bool optimizatio
     // FIXME: watch out for thread divergence. Slowdown here. Figure out why
     //if (optimizations[NUM_HBOPT_ROTLBACK32])    // forced on
     //{
+#if __CUDA_ARCH__ >= 320
         state[16] = ROTLfrom32 (state[5], 4);
         state[ 5] = ROTRfrom32 (state[3], 4);
-    //}
-    /*  else
-      {
-          state[16] = ROTR64asm (state[5], 28);        // R28  (unoptimized version)    
-          state[ 5] = ROTL64asm( state[3], 28);        // L28  (unoptimized version)
-      } */
-
+#else
+        state[16] = ROTR64(state[5], 28);
+        state[ 5] = ROTL64(state[3], 28);
+#endif
     state[ 3] = ROTL64asm( state[18], 21 );
     state[18] = ROTL64asm( state[17], 15 );
     state[17] = ROTL64asm( state[11], 10 );
@@ -557,7 +574,7 @@ void send_to_device( uint64_t target, uint64_t* message )
 __host__
 void ConfigOptimizations (cudaDeviceProp theDevice)
 {
-    printf ("HashBurner (New) Optimizations (in-use on this device):\n");
+    printf ("HashBurner (Architecture-Specific) Optimizations in use: \n");
     // TODO: do this with memcpy instead. Init all optimizations as OFF before setting them individually
     for (uint8_t i=0; i<8; ++i)
       h_HBoptimizations[i] = 0;
@@ -610,7 +627,7 @@ void gpu_init()
   {
     intensity = INTENSITY;
     cuda_device = CUDA_DEVICE;
-    printf ("\n\nNo ./0xbtc.conf - using hardcoded intensity %d and CUDA device %d.", intensity, cuda_device);
+    printf ("\n\nNo ./0xbtc.conf found- using hardcoded intensity %d and CUDA device %d.", intensity, cuda_device);
   }
 
   cudaGetDeviceCount( &device_count );
@@ -630,8 +647,7 @@ void gpu_init()
     cudaSetDeviceFlags( cudaDeviceScheduleBlockingSync | cudaDeviceLmemResizeToMax );
     cudaDeviceSetCacheConfig( cudaFuncCachePreferL1 );
 
-    printf ("\nInitialized CUDA device %d : ", cuda_device);
-    printf (device_prop.name);
+    printf ("\nInitialized CUDA device %d : %s ", cuda_device, device_prop.name);
     printf ("\nAvailable compute capability: %d.%d \n\n", device_prop.major, device_prop.minor);
 
     ConfigOptimizations (device_prop);                        // select optimizations, set in host array h_HBoptimizations[]

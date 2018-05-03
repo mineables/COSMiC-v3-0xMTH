@@ -32,8 +32,12 @@
              'process_outputs_as_sources': 1,
              'action': ['nvcc -c <(_inputs) -o <(_outputs)\
                         -cudart static -m64 -lineinfo -use_fast_math -O3 --keep --resource-usage -src-in-ptx  -Xptxas "-v --opt-level 3 --sp-bounds-check --warn-on-spills --warn-on-local-memory-usage --dont-merge-basicblocks" ',
+                        '-gencode=arch=compute_70,code=\\\"sm_70,compute_70\\\"',
                         '-gencode=arch=compute_61,code=\\\"sm_61,compute_61\\\"',
-                        '-gencode=arch=compute_52,code=\\\"sm_52,compute_52\\\"'] 
+                        '-gencode=arch=compute_52,code=\\\"sm_52,compute_52\\\"',
+						'-gencode=arch=compute_50,code=\\\"sm_50,compute_50\\\"',
+						'-gencode=arch=compute_37,code=\\\"sm_37,compute_37\\\"',
+						'-gencode=arch=compute_30,code=\\\"sm_30,compute_30\\\"'] 
             },
             {'rule_name': 'cuda on linux',
              'message': "compile cuda file on linux",
@@ -42,7 +46,14 @@
                         '-c','<@(_inputs)','-o','<@(_outputs)',
                         '-gencode=arch=compute_70,code=\"sm_70,compute_70\"',
                         '-gencode=arch=compute_61,code=\"sm_61,compute_61\"',
-                        '-gencode=arch=compute_52,code=\"sm_52,compute_52\"']
+                        '-gencode=arch=compute_60,code=\"sm_60,compute_60\"',
+                        '-gencode=arch=compute_61,code=\"sm_61,compute_61\"',
+                        '-gencode=arch=compute_53,code=\"sm_53,compute_53\"',
+                        '-gencode=arch=compute_52,code=\"sm_52,compute_52\"',
+                        '-gencode=arch=compute_50,code=\"sm_50,compute_50\"',
+                        '-gencode=arch=compute_37,code=\"sm_37,compute_37\"',
+                        '-gencode=arch=compute_35,code=\"sm_35,compute_35\"',
+                        '-gencode=arch=compute_30,code=\"sm_30,compute_30\"']
             }
           ]
         ]
