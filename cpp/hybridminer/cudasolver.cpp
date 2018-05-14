@@ -1,5 +1,7 @@
 #include "cudasolver.h"
 
+#include <iostream>
+
 //we will need this!
 #include "cuda_sha3.h"
 
@@ -100,7 +102,27 @@ void CUDASolver::setTarget( std::string const& target )
 
   s_target = t + target.substr(2);
 
+
+  // note: gpu miner only uses top 64 bits of the target
   m_target = std::stoull( (s_target).substr( 0, 16 ), nullptr, 16 );
+
+  // note: if target is too easy, increase it to 32 difficulty. This prevents a
+  // bug where the submission queue fills with blocks while a solution is
+  // waiting to be confirmed on the blockchain solution queue is filled with too many solutions  to prevent
+  // submission queue from filliong
+  //       difficulty   target
+  //                1 = 0x0000040000000000
+  //                8 = 0x0000008000000000
+  //               32 = 0x0000002000000000
+  //              128 = 0x0000000800000000
+  //              512 = 0x0000000200000000
+  std::cout << "target is " << m_target << std::endl;
+  if (m_target > 0x0000000200000000) {
+    m_target = 0x0000000200000000;
+    std::cout << "target decreased to " << m_target << std::endl;
+  }
+
+
   m_target_ready = true;
 
   m_updated_gpu_inputs = true;
