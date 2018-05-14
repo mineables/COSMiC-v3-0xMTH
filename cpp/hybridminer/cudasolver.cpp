@@ -106,7 +106,7 @@ void CUDASolver::setTarget( std::string const& target )
   // note: gpu miner only uses top 64 bits of the target
   m_target = std::stoull( (s_target).substr( 0, 16 ), nullptr, 16 );
 
-  // note: if target is too easy, increase it to 32 difficulty. This prevents a
+  // note: if target is too easy, increase it to 512 difficulty. This prevents a
   // bug where the submission queue fills with blocks while a solution is
   // waiting to be confirmed on the blockchain solution queue is filled with too many solutions  to prevent
   // submission queue from filliong
