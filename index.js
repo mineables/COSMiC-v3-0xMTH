@@ -36,7 +36,7 @@ function init() {
         }
     } else {
         drawLayout();
-        console.log('Welcome to COSMiC: Community Open-Source Miner including CUDA')
+        console.log('Welcome to COSMiC: Community Open-Source Miner including CUDA [\x1b[38;5;86m0xMithril Edition\x1b[0m]')
         console.log('HashBurner build by LtTofu [V3.4t] - "Cookin your Hashbrowns" ')
         console.log('based on v2.10.0pre5+ by Mikers, Azlehria & the 0xBitcoin Discord Crew')
         console.log('* Experimental Build for Older CUDA Devices (Kepler and previous) *')
@@ -168,7 +168,8 @@ async function handleCommand(result) {
         Vault.requirePassword(true) //for encryption of private key !
 
         var infura_provider_url = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
-        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xbitcointoken.blockchain_address
+        //test using 0xmithril contract. would be nice to paramaterize this
+        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
 
         Vault.setWeb3ProviderUrl(infura_provider_url);
         Vault.selectContract(ropsten_contract_address);
@@ -215,11 +216,11 @@ async function handleCommand(result) {
 }
 
 function printHelp() {
-    console.log('--0xBitcoin Miner Help--')
+    console.log('--0xMithril Miner Help--')
     console.log('Available commands:\n')
 
-    console.log('"account new"            - Create a new account and local keystore (.0xbitcoin)')
-    console.log('"account list"           - List accounts (local keystore in .0xbitcoin or specified address')
+    console.log('"account new"            - Create a new account and local keystore (.0xmithril)')
+    console.log('"account list"           - List accounts (local keystore in .0xmithril or specified address')
     console.log('"account select 0x####"  - Select the active mining account by address')
     console.log('"account balance"        - List the Ether & Token balance of the active account\n')
 

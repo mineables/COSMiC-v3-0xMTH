@@ -3,12 +3,14 @@
   "networks": {
       "mainnet": {
               "contracts": {
-                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"}
+                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},
+                "_0xmithriltoken": {"name":"0xMithrilToken", "blockchain_address":"0x8162e9C8A97de6E0166B742751AffDa3A2f55C6C"}
               }
             },
       "testnet": {
               "contracts": {
-                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x74960bcac083ed732215229811c8b8a353c7e4ba"}
+                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x74960bcac083ed732215229811c8b8a353c7e4ba"},
+                "_0xmithriltoken": {"name":"0xMithrilToken", "blockchain_address":"0x959EaDe62ec13AfcEEAbBDeF14Bda355C9439d75"}
               }
             } 
     }
