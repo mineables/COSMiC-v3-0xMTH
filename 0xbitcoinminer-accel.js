@@ -143,6 +143,8 @@ module.exports = {
             miningParameters.challengeNumber = parameters.challengeNumber;
             miningParameters.miningTarget = parameters.miningTarget;
             miningParameters.poolEthAddress = parameters.poolEthAddress;
+            //new: contractEthAddress
+            miningParameters.contractEthAddress = this.vault.getTokenContractAddress();
 
             //give data to the c++ addon
             await this.updateCPUAddonParameters(miningParameters, miningStyle)
@@ -262,6 +264,36 @@ module.exports = {
             addressFrom = minerEthAddress;
         }
 
+        const xorHexAddressStrings = function(hex_a, hex_b) {
+            let result = "0x"
+            try {
+                //start at 2 since addresses start with '0x'
+                for (var i = 2; i < 42; i += 2) {
+                    //console.log('byte_a_str', hex_a.substring(i, i+2))
+                    //console.log('byte_b_str', hex_b.substring(i, i+2))
+                    let byte_a = parseInt(hex_a.substring(i, i+2), 16);
+                    let byte_b = parseInt(hex_b.substring(i, i+2), 16);
+                    //console.log("byte_a", byte_a.toString(16), "byte_b", byte_b.toString(16));
+                    let xored = byte_a ^ byte_b;
+                    let xored_padded = ("00" + xored.toString(16)).substr(-2); // pad hex byte string with zeros if necessary
+                    result += xored_padded;
+                    //console.log("result", result);
+                }
+            } catch (e) {
+                console.log("\nERROR: bad Eth address!\ncheck `account list` and `contract list` for bad characters\n\n");
+                process.exit(1);
+            }
+            return result;
+        };
+        
+
+        //new for 0xmithril: 
+        //include contract address by XORing miner and contract's eth addresses
+        addressFrom = xorHexAddressStrings(addressFrom, miningParameters.contractEthAddress);
+        console.log ("                    old addressFrom:", addressFrom);
+        console.log ("                    new addressFrom:", addressFrom);
+        console.log ("   miningParameters.challengeNumber:", miningParameters.challengeNumber);
+        console.log ("miningParameters.contractEthAddress:", miningParameters.contractEthAddress);
         CPPMiner.setMinerAddress(addressFrom);
 
         const printSolutionCount = async(solutionString) => {
