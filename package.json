@@ -5,9 +5,6 @@
     "type": "git",
     "url": "https://github.com/azlehria/0xbitcoin-gpuminer.git"
   },
-  "engines": {
-    "node": ">=8.9"
-  },
   "description": "Open-Source CUDA 0xBitcoin (0xBTC) Miner",
   "main": "index.js",
   "scripts": {
