@@ -275,6 +275,7 @@ function printHelp() {
 
     console.log('"account new"            - Create a new account and local keystore (.0xmithril)')
     console.log('"account list"           - List accounts (local keystore in .0xmithril or specified address')
+    console.log('"account remove [index]" - Remove account at a certain index')
     console.log('"account select 0x####"  - Select the active mining account by address')
     console.log('"account balance"        - List the Ether & Token balance of the active account\n')
 
