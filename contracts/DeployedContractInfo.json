@@ -8,9 +8,10 @@
               }
             },
       "testnet": {
+	      "url": "https://rinkeby.infura.io/gmXEVo5luMPUGPqg6mhy",
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x74960bcac083ed732215229811c8b8a353c7e4ba"},
-                "_0xmithriltoken": {"name":"0xMithrilToken", "blockchain_address":"0x959EaDe62ec13AfcEEAbBDeF14Bda355C9439d75"}
+                "_0xmithriltoken": {"name":"0xMithrilToken", "blockchain_address":"0x90750ae33f17dd509fbd63a0e72a7f92299f9f08"}
               }
             } 
     }

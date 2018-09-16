@@ -7,6 +7,7 @@ var Web3 = require('web3')
 var ContractInterface = require("./contracts/DeployedContractInfo")
 var NetworkInterface = require("./lib/network-interface");
 var PoolInterface = require("./lib/pool-interface");
+var ArtifactInterface = require("./lib/artifact-interface");
 
 var web3 = new Web3();
 
@@ -167,7 +168,7 @@ async function handleCommand(result) {
     if (subsystem_name == 'test' && subsystem_command == 'mine') {
         Vault.requirePassword(true) //for encryption of private key !
 
-        var infura_provider_url = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
+        var infura_provider_url = ContractInterface.networks.testnet.url;
         //test using 0xmithril contract. would be nice to paramaterize this
         var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
 
@@ -206,6 +207,59 @@ async function handleCommand(result) {
         }
     }
 
+    if (subsystem_name == 'vrig') {
+
+        Vault.requirePassword(true) //for encryption of private key !
+
+        var infura_provider_url = ContractInterface.networks.testnet.url;
+        //test using 0xmithril contract. would be nice to paramaterize this
+        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
+
+        Vault.setWeb3ProviderUrl(infura_provider_url);
+        Vault.selectContract(ropsten_contract_address);
+
+        web3.setProvider(infura_provider_url)
+
+        var unlocked = await Vault.init(web3, miningLogger);
+        if (!unlocked) return false;
+
+        web3.setProvider(infura_provider_url)
+        Vault.selectContract(ropsten_contract_address);
+
+
+        ArtifactInterface.init(web3, Vault, miningLogger);
+
+        //us command as option -- for cuda or opencl
+       // subsystem_option = subsystem_command;
+        //console.log(subsystem_option);
+        var subsystem_option2 = split_command[3];
+
+        await ArtifactInterface.handleArtifactCommand(subsystem_command, subsystem_option, subsystem_option2);
+        //Miner.mine(subsystem_command, subsystem_option)
+    }
+
+    if (subsystem_name == 'vgpu') {
+        var infura_provider_url = ContractInterface.networks.testnet.url;
+        //test using 0xmithril contract. would be nice to paramaterize this
+        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
+
+        Vault.setWeb3ProviderUrl(infura_provider_url);
+        Vault.selectContract(ropsten_contract_address);
+
+        web3.setProvider(infura_provider_url)
+
+        var unlocked = await Vault.init(web3, miningLogger);
+        if (!unlocked) return false;
+
+        web3.setProvider(infura_provider_url)
+        Vault.selectContract(ropsten_contract_address);
+
+        ArtifactInterface.init(web3, Vault, miningLogger);
+
+        ArtifactInterface.handleChildCommand(subsystem_command, subsystem_option);
+
+    }
+
     if (subsystem_name == 'exit' || subsystem_name == 'quit') {
         process.exit(0);
     }
@@ -221,14 +275,26 @@ function printHelp() {
 
     console.log('"account new"            - Create a new account and local keystore (.0xmithril)')
     console.log('"account list"           - List accounts (local keystore in .0xmithril or specified address')
+    console.log('"account remove [index]" - Remove account at a certain index')
     console.log('"account select 0x####"  - Select the active mining account by address')
     console.log('"account balance"        - List the Ether & Token balance of the active account\n')
+
+    console.log('"vrig list"          - List the owned artifacts of the active account')
+    console.log('"vrig config [vrigId] [vgpuId1,vgpuId2 ...]"          - Configure Base vRig with vGPU(s)')
+    console.log('"vrig add [vrigId] [socketId]"          - Add socket artifact to base vrig')
+    console.log('"vrig remove [vrigId] [socket index]"        - Remove vrig from active mineable contract ** by socket index - not id')
+    console.log('"vrig install [vrigId]"       - Install vrig to active mineable contract')
+    console.log('"vrig uninstall"       - Uninstall vrig from active mineable contract')
+    console.log('"vrig [vrigId]"  - List statistics for vrig [id]\n')
+
+    console.log('"vgpu list"            - List the owned vgpu artifacts of the active account\n')
 
     console.log('"contract list"          - List the selected token contract to mine')
     console.log('"contract select 0x####" - Select a PoW token contract to mine\n')
 
     console.log('"config list"            - Show your current configuration')
     console.log('"config gasprice #"      - Set the gasprice used to submit PoW in solo mining')
+    console.log('"config artgasprice #"      - Set the gasprice used perform artifact operations')
     //  console.log('"config cpu_threads #"   - Set the number of CPU cores to use for mining ')
     console.log('"config web3provider http://----:####" - Set the web3 provider to submit PoW\n')
 
@@ -238,7 +304,7 @@ function printHelp() {
     console.log('"pool list"              - List the selected mining pool')
     console.log('"pool select http://####.com:####" - Select a pool to mine into\n')
 
-    console.log('"test mine"              - Begin solo mining on Ropsten testnet')
+    console.log('"test mine"              - Begin solo mining on testnet')
     console.log('"mine"                   - Begin solo mining')
     console.log('"mine cuda"              - Begin solo mining using CUDA GPU')
     //console.log('"mine opencl" - Begin mining using OpenCL GPU')
