@@ -263,7 +263,8 @@ module.exports = {
         } else {
             addressFrom = minerEthAddress;
         }
-
+        
+        /*
         const xorHexAddressStrings = function(hex_a, hex_b) {
             let result = "0x"
             try {
@@ -286,11 +287,14 @@ module.exports = {
 
         //new for 0xmithril: 
         //include contract address by XORing miner and contract's eth addresses
-        addressFrom = xorHexAddressStrings(addressFrom, miningParameters.contractEthAddress);
-        console.log ("                    old addressFrom:", addressFrom);
-        console.log ("                    new addressFrom:", addressFrom);
-        console.log ("   miningParameters.challengeNumber:", miningParameters.challengeNumber);
-        console.log ("miningParameters.contractEthAddress:", miningParameters.contractEthAddress);
+        
+            addressFrom = xorHexAddressStrings(addressFrom, miningParameters.contractEthAddress);
+            console.log ("                    old addressFrom:", addressFrom);
+            console.log ("                    new addressFrom:", addressFrom);
+            console.log ("   miningParameters.challengeNumber:", miningParameters.challengeNumber);
+            console.log ("miningParameters.contractEthAddress:", miningParameters.contractEthAddress);
+        */
+
         CPPMiner.setMinerAddress(addressFrom);
 
         const printSolutionCount = async(solutionString) => {
