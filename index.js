@@ -9,6 +9,9 @@ var NetworkInterface = require("./lib/network-interface");
 var PoolInterface = require("./lib/pool-interface");
 var ArtifactInterface = require("./lib/artifact-interface");
 
+var provider = ContractInterface.networks.sokol
+console.log(provider)
+
 var web3 = new Web3();
 
 var running = true;
@@ -37,7 +40,7 @@ function init() {
         }
     } else {
         drawLayout();
-        console.log('Welcome to COSMiC: Community Open-Source Miner including CUDA [\x1b[38;5;86m0xMithril Edition\x1b[0m]')
+        console.log('Welcome to COSMiC: Community Open-Source Miner including CUDA [\x1b[38;5;86mMineables Edition\x1b[0m]')
         console.log('HashBurner build by LtTofu [V3.4t] - "Cookin your Hashbrowns" ')
         console.log('based on v2.10.0pre5+ by Mikers, Azlehria & the 0xBitcoin Discord Crew')
         console.log('* Experimental Build for Older CUDA Devices (Kepler and previous) *')
@@ -168,20 +171,20 @@ async function handleCommand(result) {
     if (subsystem_name == 'test' && subsystem_command == 'mine') {
         Vault.requirePassword(true) //for encryption of private key !
 
-        var infura_provider_url = ContractInterface.networks.testnet.url;
+        //var infura_provider_url = ContractInterface.networks.testnet.url;
         //test using 0xmithril contract. would be nice to paramaterize this
-        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
+        //var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
+        
+        Vault.setWeb3ProviderUrl(provider.url);
+        Vault.selectContract(provider.contractAddress);
 
-        Vault.setWeb3ProviderUrl(infura_provider_url);
-        Vault.selectContract(ropsten_contract_address);
-
-        web3.setProvider(infura_provider_url)
+        web3.setProvider(provider.url)
 
         var unlocked = await Vault.init(web3, miningLogger);
         if (!unlocked) return false;
 
-        web3.setProvider(infura_provider_url)
-        Vault.selectContract(ropsten_contract_address);
+        Vault.setWeb3ProviderUrl(provider.url);
+        Vault.selectContract(provider.contractAddress);
 
         NetworkInterface.init(web3, Vault, miningLogger);
 
@@ -211,21 +214,15 @@ async function handleCommand(result) {
 
         Vault.requirePassword(true) //for encryption of private key !
 
-        var infura_provider_url = ContractInterface.networks.testnet.url;
-        //test using 0xmithril contract. would be nice to paramaterize this
-        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
-
-        Vault.setWeb3ProviderUrl(infura_provider_url);
-        Vault.selectContract(ropsten_contract_address);
-
-        web3.setProvider(infura_provider_url)
+        Vault.setWeb3ProviderUrl(provider.url);
+        Vault.selectContract(provider.contractAddress);
+        web3.setProvider(provider.url)
 
         var unlocked = await Vault.init(web3, miningLogger);
         if (!unlocked) return false;
 
-        web3.setProvider(infura_provider_url)
-        Vault.selectContract(ropsten_contract_address);
-
+        web3.setProvider(provider.url)
+        Vault.selectContract(provider.contractAddress);
 
         ArtifactInterface.init(web3, Vault, miningLogger);
 
@@ -239,20 +236,15 @@ async function handleCommand(result) {
     }
 
     if (subsystem_name == 'vgpu') {
-        var infura_provider_url = ContractInterface.networks.testnet.url;
-        //test using 0xmithril contract. would be nice to paramaterize this
-        var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
-
-        Vault.setWeb3ProviderUrl(infura_provider_url);
-        Vault.selectContract(ropsten_contract_address);
-
-        web3.setProvider(infura_provider_url)
+        Vault.setWeb3ProviderUrl(provider.url);
+        Vault.selectContract(provider.contractAddress);
+        web3.setProvider(provider.url)
 
         var unlocked = await Vault.init(web3, miningLogger);
         if (!unlocked) return false;
 
-        web3.setProvider(infura_provider_url)
-        Vault.selectContract(ropsten_contract_address);
+        Vault.selectContract(provider.contractAddress);
+        web3.setProvider(provider.url)
 
         ArtifactInterface.init(web3, Vault, miningLogger);
 
@@ -270,7 +262,7 @@ async function handleCommand(result) {
 }
 
 function printHelp() {
-    console.log('--0xMithril Miner Help--')
+    console.log('--Mineables Miner Help--')
     console.log('Available commands:\n')
 
     console.log('"account new"            - Create a new account and local keystore (.0xmithril)')
