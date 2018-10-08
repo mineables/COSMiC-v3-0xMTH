@@ -274,7 +274,7 @@ function printHelp() {
     console.log('"vrig list"          - List the owned artifacts of the active account')
     console.log('"vrig config [vrigId] [vgpuId1,vgpuId2 ...]"          - Configure Base vRig with vGPU(s)')
     console.log('"vrig add [vrigId] [socketId]"          - Add socket artifact to base vrig')
-    console.log('"vrig remove [vrigId] [socket index]"        - Remove vrig from active mineable contract ** by socket index - not id')
+    console.log('"vrig remove [vrigId] [socket-index]"        - Remove vrig from active mineable contract ** by socket index - not id')
     console.log('"vrig install [vrigId]"       - Install vrig to active mineable contract')
     console.log('"vrig uninstall"       - Uninstall vrig from active mineable contract')
     console.log('"vrig [vrigId]"  - List statistics for vrig [id]\n')
@@ -288,7 +288,7 @@ function printHelp() {
     console.log('"config gasprice #"      - Set the gasprice used to submit PoW in solo mining')
     console.log('"config artgasprice #"      - Set the gasprice used perform artifact operations')
     //  console.log('"config cpu_threads #"   - Set the number of CPU cores to use for mining ')
-    console.log('"config web3provider http://----:####" - Set the web3 provider to submit PoW\n')
+    console.log('"config web3provider http://----:####" - Set the web3 provider \n')
 
     console.log('"pool mine"              - Begin mining into a pool using CPU')
     console.log('"pool mine cuda"         - Begin mining into a pool using CUDA GPU')
