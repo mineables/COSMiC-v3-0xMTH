@@ -2,17 +2,16 @@
 {
   "networks": {
       "mainnet": {
-              "contracts": {
-                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},
-                "_0xmithriltoken": {"name":"0xMithrilToken", "blockchain_address":"0x8162e9C8A97de6E0166B742751AffDa3A2f55C6C"}
-              }
+	      "url": "https://mainnet.infura.io/gmXEVo5luMPUGPqg6mhy",
+              "contractAddress": "0x90750ae33f17dd509fbd63a0e72a7f92299f9f08"
             },
-      "testnet": {
+      "rinkeby": {
 	      "url": "https://rinkeby.infura.io/gmXEVo5luMPUGPqg6mhy",
-              "contracts": {
-                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x74960bcac083ed732215229811c8b8a353c7e4ba"},
-                "_0xmithriltoken": {"name":"0xMithrilToken", "blockchain_address":"0x90750ae33f17dd509fbd63a0e72a7f92299f9f08"}
-              }
-            } 
+              "contractAddress": "0x90750ae33f17dd509fbd63a0e72a7f92299f9f08"
+            },
+      "sokol": {
+	      "url": "https://sokol.poa.network",
+              "contractAddress": "0x90750ae33f17dd509fbd63a0e72a7f92299f9f08"
+            }
     }
 }
