@@ -11,18 +11,10 @@ var ArtifactInterface = require("./lib/artifact-interface");
 
 var provider = ContractInterface.networks.sokol
 console.log(provider)
-
 var web3 = new Web3();
-
 var running = true;
 
-// Consider:
-/*    prompt.message = null;
-    prompt.delimiter = ":";
-    prompt.start({ noHandleSIGINT: true });
-*/
-
-init();
+init()
 
 function init() {
     initSignalHandlers();
@@ -124,6 +116,11 @@ async function handleCommand(result) {
     var subsystem_command = split_command[1];
     var subsystem_option = split_command[2];
 
+    if (subsystem_name == 'login' ) {
+	
+	await Vault.assertValidPassword()
+    }
+
     if (subsystem_name == 'account') {
         if (subsystem_command === 'new' || subsystem_command === 'list') {
             Vault.requirePassword(true) //for encryption of private key !
@@ -164,34 +161,6 @@ async function handleCommand(result) {
 
         //us command as option -- for cuda or opencl
         subsystem_option = subsystem_command;
-        Miner.mine(subsystem_command, subsystem_option)
-    }
-
-    //mining test
-    if (subsystem_name == 'test' && subsystem_command == 'mine') {
-        Vault.requirePassword(true) //for encryption of private key !
-
-        //var infura_provider_url = ContractInterface.networks.testnet.url;
-        //test using 0xmithril contract. would be nice to paramaterize this
-        //var ropsten_contract_address = ContractInterface.networks.testnet.contracts._0xmithriltoken.blockchain_address
-        
-        Vault.setWeb3ProviderUrl(provider.url);
-        Vault.selectContract(provider.contractAddress);
-
-        web3.setProvider(provider.url)
-
-        var unlocked = await Vault.init(web3, miningLogger);
-        if (!unlocked) return false;
-
-        Vault.setWeb3ProviderUrl(provider.url);
-        Vault.selectContract(provider.contractAddress);
-
-        NetworkInterface.init(web3, Vault, miningLogger);
-
-        Miner.init(web3, Vault, miningLogger);
-        Miner.setNetworkInterface(NetworkInterface);
-
-        Miner.setMiningStyle("solo")
         Miner.mine(subsystem_command, subsystem_option)
     }
 
