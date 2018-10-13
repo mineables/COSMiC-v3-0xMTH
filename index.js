@@ -254,6 +254,7 @@ function printHelp() {
     console.log('"contract select 0x####" - Select a PoW token contract to mine\n')
 
     console.log('"config list"            - Show your current configuration')
+    console.log('"config vardiff #"      - Set custom vardiff for pool mining')
     console.log('"config gasprice #"      - Set the gasprice used to submit PoW in solo mining')
     console.log('"config artgasprice #"      - Set the gasprice used perform artifact operations')
     //  console.log('"config cpu_threads #"   - Set the number of CPU cores to use for mining ')
