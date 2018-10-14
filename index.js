@@ -165,6 +165,7 @@ async function handleCommand(result) {
     }
 
     if (subsystem_name == 'pool') {
+        Vault.requirePassword(true) //for encryption of private key !
         var unlocked = await Vault.init(web3, miningLogger);
         if (!unlocked) return false;
 
