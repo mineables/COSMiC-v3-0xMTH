@@ -8,8 +8,6 @@ var NetworkInterface = require("./lib/network-interface");
 var PoolInterface = require("./lib/pool-interface");
 var ArtifactInterface = require("./lib/artifact-interface");
 
-var provider = ContractInterface.networks.sokol
-console.log(provider)
 var web3 = new Web3();
 var running = true;
 
