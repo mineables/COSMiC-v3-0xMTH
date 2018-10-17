@@ -4,7 +4,6 @@ const miningLogger = require("./lib/mining-logger");
 var prompt = require('prompt');
 var pjson = require('./package.json');
 var Web3 = require('web3')
-var ContractInterface = require("./contracts/DeployedContractInfo")
 var NetworkInterface = require("./lib/network-interface");
 var PoolInterface = require("./lib/pool-interface");
 var ArtifactInterface = require("./lib/artifact-interface");
@@ -184,15 +183,15 @@ async function handleCommand(result) {
 
         Vault.requirePassword(true) //for encryption of private key !
 
-        Vault.setWeb3ProviderUrl(provider.url);
-        Vault.selectContract(provider.contractAddress);
-        web3.setProvider(provider.url)
+        //Vault.setWeb3ProviderUrl(provider.url);
+        //Vault.selectContract(provider.contractAddress);
+        //web3.setProvider(provider.url)
 
         var unlocked = await Vault.init(web3, miningLogger);
         if (!unlocked) return false;
 
-        web3.setProvider(provider.url)
-        Vault.selectContract(provider.contractAddress);
+        //web3.setProvider(provider.url)
+        //Vault.selectContract(provider.contractAddress);
 
         ArtifactInterface.init(web3, Vault, miningLogger);
 
@@ -206,15 +205,15 @@ async function handleCommand(result) {
     }
 
     if (subsystem_name == 'vgpu') {
-        Vault.setWeb3ProviderUrl(provider.url);
-        Vault.selectContract(provider.contractAddress);
-        web3.setProvider(provider.url)
+        //Vault.setWeb3ProviderUrl(provider.url);
+        //Vault.selectContract(provider.contractAddress);
+        //web3.setProvider(provider.url)
 
         var unlocked = await Vault.init(web3, miningLogger);
         if (!unlocked) return false;
 
-        Vault.selectContract(provider.contractAddress);
-        web3.setProvider(provider.url)
+        //Vault.selectContract(provider.contractAddress);
+        //web3.setProvider(provider.url)
 
         ArtifactInterface.init(web3, Vault, miningLogger);
 
@@ -267,7 +266,6 @@ function printHelp() {
     console.log('"pool list"              - List the selected mining pool')
     console.log('"pool select http://####.com:####" - Select a pool to mine into\n')
 
-    console.log('"test mine"              - Begin solo mining on testnet')
     console.log('"mine"                   - Begin solo mining')
     console.log('"mine cuda"              - Begin solo mining using CUDA GPU')
     //console.log('"mine opencl" - Begin mining using OpenCL GPU')
