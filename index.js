@@ -13,7 +13,7 @@ var running = true;
 
 init()
 
-function init() {
+async function init() {
     initSignalHandlers();
 
     prompt.message = null;
@@ -36,6 +36,8 @@ function init() {
         console.log('')
         console.log('Type a command to get started.  Type "help" for a list of commands.')
     }
+    // explicitly ask for password
+    await Vault.assertValidPassword()
     return getPrompt();
 }
 
@@ -238,18 +240,18 @@ function printHelp() {
     console.log('"account select 0x####"  - Select the active mining account by address')
     console.log('"account balance"        - List the Ether & Token balance of the active account\n')
 
-    console.log('"vrig list"          - List the owned artifacts of the active account')
-    console.log('"vrig config [vrigId] [vgpuId1,vgpuId2 ...]"          - Configure Base vRig with vGPU(s)')
-    console.log('"vrig add [vrigId] [socketId]"          - Add socket artifact to base vrig')
-    console.log('"vrig remove [vrigId] [socket-index]"        - Remove vrig from active mineable contract ** by socket index - not id')
-    console.log('"vrig install [vrigId]"       - Install vrig to active mineable contract')
-    console.log('"vrig uninstall"       - Uninstall vrig from active mineable contract')
-    console.log('"vrig [vrigId]"  - List statistics for vrig [id]\n')
+    //console.log('"vrig list"          - List the owned artifacts of the active account')
+    //console.log('"vrig config [vrigId] [vgpuId1,vgpuId2 ...]"          - Configure Base vRig with vGPU(s)')
+    //console.log('"vrig add [vrigId] [socketId]"          - Add socket artifact to base vrig')
+    //console.log('"vrig remove [vrigId] [socket-index]"        - Remove vrig from active mineable contract ** by socket index - not id')
+    //console.log('"vrig install [vrigId]"       - Install vrig to active mineable contract')
+    //console.log('"vrig uninstall"       - Uninstall vrig from active mineable contract')
+    //console.log('"vrig [vrigId]"  - List statistics for vrig [id]\n')
 
-    console.log('"vgpu list"            - List the owned vgpu artifacts of the active account\n')
+    //console.log('"vgpu list"            - List the owned vgpu artifacts of the active account\n')
 
-    console.log('"contract list"          - List the selected token contract to mine')
-    console.log('"contract select 0x####" - Select a PoW token contract to mine\n')
+    //console.log('"contract list"          - List the selected token contract to mine')
+    //console.log('"contract select 0x####" - Select a PoW token contract to mine\n')
 
     console.log('"config list"            - Show your current configuration')
     console.log('"config vardiff #"      - Set custom vardiff for pool mining')
