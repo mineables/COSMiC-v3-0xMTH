@@ -96,17 +96,6 @@ async function promptForCommand() {
     });
 }
 
-/*
-if (process.argv.length <= 2) {
-console. log("Please add a subsystem parameter (use 'npm run help' for help)");
-process. exit(-1);
-}
-
-var subsystem_name =  process.argv[2] ;
-var subsystem_command = process.argv[3] ;
-var subsystem_option = process.argv[4] ;
-*/
-
 async function handleCommand(result) {
     var split_command = result.split(' ');
     //console.log( split_command )
@@ -179,48 +168,6 @@ async function handleCommand(result) {
         }
     }
 
-    if (subsystem_name == 'vrig') {
-
-        Vault.requirePassword(true) //for encryption of private key !
-
-        //Vault.setWeb3ProviderUrl(provider.url);
-        //Vault.selectContract(provider.contractAddress);
-        //web3.setProvider(provider.url)
-
-        var unlocked = await Vault.init(web3, miningLogger);
-        if (!unlocked) return false;
-
-        //web3.setProvider(provider.url)
-        //Vault.selectContract(provider.contractAddress);
-
-        ArtifactInterface.init(web3, Vault, miningLogger);
-
-        //us command as option -- for cuda or opencl
-       // subsystem_option = subsystem_command;
-        //console.log(subsystem_option);
-        var subsystem_option2 = split_command[3];
-
-        await ArtifactInterface.handleArtifactCommand(subsystem_command, subsystem_option, subsystem_option2);
-        //Miner.mine(subsystem_command, subsystem_option)
-    }
-
-    if (subsystem_name == 'vgpu') {
-        //Vault.setWeb3ProviderUrl(provider.url);
-        //Vault.selectContract(provider.contractAddress);
-        //web3.setProvider(provider.url)
-
-        var unlocked = await Vault.init(web3, miningLogger);
-        if (!unlocked) return false;
-
-        //Vault.selectContract(provider.contractAddress);
-        //web3.setProvider(provider.url)
-
-        ArtifactInterface.init(web3, Vault, miningLogger);
-
-        ArtifactInterface.handleChildCommand(subsystem_command, subsystem_option);
-
-    }
-
     if (subsystem_name == 'exit' || subsystem_name == 'quit') {
         process.exit(0);
     }
@@ -238,25 +185,15 @@ function printHelp() {
     console.log('"account list"           - List accounts (local keystore in .0xmithril or specified address')
     console.log('"account remove [index]" - Remove account at a certain index')
     console.log('"account select 0x####"  - Select the active mining account by address')
-    console.log('"account balance"        - List the Ether & Token balance of the active account\n')
-
-    //console.log('"vrig list"          - List the owned artifacts of the active account')
-    //console.log('"vrig config [vrigId] [vgpuId1,vgpuId2 ...]"          - Configure Base vRig with vGPU(s)')
-    //console.log('"vrig add [vrigId] [socketId]"          - Add socket artifact to base vrig')
-    //console.log('"vrig remove [vrigId] [socket-index]"        - Remove vrig from active mineable contract ** by socket index - not id')
-    //console.log('"vrig install [vrigId]"       - Install vrig to active mineable contract')
-    //console.log('"vrig uninstall"       - Uninstall vrig from active mineable contract')
-    //console.log('"vrig [vrigId]"  - List statistics for vrig [id]\n')
-
-    //console.log('"vgpu list"            - List the owned vgpu artifacts of the active account\n')
-
-    //console.log('"contract list"          - List the selected token contract to mine')
-    //console.log('"contract select 0x####" - Select a PoW token contract to mine\n')
+    console.log('"account balance"        - List the Ether & Token balance of the active account')
+    console.log('"account import 0x####"  - Import an existing account with private key\n')
+    
+    console.log('"contract list"          - List the selected token contract to mine')
+    console.log('"contract select 0x####" - Select a PoW token contract to mine\n')
 
     console.log('"config list"            - Show your current configuration')
     console.log('"config vardiff #"      - Set custom vardiff for pool mining')
     console.log('"config gasprice #"      - Set the gasprice used to submit PoW in solo mining')
-    console.log('"config artgasprice #"      - Set the gasprice used perform artifact operations')
     //  console.log('"config cpu_threads #"   - Set the number of CPU cores to use for mining ')
     console.log('"config web3provider http://----:####" - Set the web3 provider \n')
 
